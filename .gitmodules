@@ -1,0 +1,3 @@
+[submodule "vendor-src/ksf_amortization_core"]
+	path = vendor-src/ksf_amortization_core
+	url = https://github.com/ksfraser/ksf_amortization_core.git
