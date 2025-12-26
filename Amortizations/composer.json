@@ -1,0 +1,15 @@
+{
+    "name": "ksfraser/amortizations-core",
+    "description": "Core amortization and loan management engine - shared across all platforms",
+    "type": "library",
+    "license": "MIT",
+    "version": "1.0.4",
+    "require": {
+        "php": ">=7.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ksfraser\\Amortizations\\": "src/Ksfraser/Amortizations/"
+        }
+    }
+}
