@@ -233,7 +233,7 @@ class LoanInsuranceCalculator
     {
         return array_filter(
             $this->policies,
-            fn($p) => $p['loan_id'] === $loanId && $p['status'] === 'ACTIVE'
+            function($p) use ($loanId) { return $p['loan_id'] === $loanId && $p['status'] === 'ACTIVE'; }
         );
     }
 

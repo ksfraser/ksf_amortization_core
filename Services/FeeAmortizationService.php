@@ -101,7 +101,7 @@ class FeeAmortizationService
         $this->fees[$loanId] = array_values(
             array_filter(
                 $this->fees[$loanId],
-                fn($f) => $f['fee_id'] !== $feeId
+                function($f) use ($feeId) { return $f['fee_id'] !== $feeId; }
             )
         );
 

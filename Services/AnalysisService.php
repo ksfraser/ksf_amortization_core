@@ -15,8 +15,14 @@ use Ksfraser\Amortizations\Repositories\LoanRepository;
  */
 class AnalysisService
 {
-    private LoanRepository $loanRepository;
-    private ScheduleRecalculationService $recalculationService;
+    /**
+     * @var LoanRepository
+     */
+    private $loanRepository;
+    /**
+     * @var ScheduleRecalculationService
+     */
+    private $recalculationService;
 
     public function __construct(
         LoanRepository $loanRepository,

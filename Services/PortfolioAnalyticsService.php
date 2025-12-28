@@ -14,7 +14,10 @@ use DateTime;
  */
 class PortfolioAnalyticsService
 {
-    private DecimalCalculator $calculator;
+    /**
+     * @var DecimalCalculator
+     */
+    private $calculator;
 
     public function __construct()
     {
@@ -87,7 +90,7 @@ class PortfolioAnalyticsService
      */
     public function calculatePortfolioRiskScore(array $loans): float
     {
-        $rates = array_map(fn($loan) => $loan->getAnnualRate(), $loans);
+        $rates = array_map(function($loan) { return $loan->getAnnualRate(); }, $loans);
         $avgRate = array_sum($rates) / count($rates);
 
         // Risk: variance in rates + concentration
@@ -113,7 +116,7 @@ class PortfolioAnalyticsService
     public function identifyHighRiskLoans(array $loans): array
     {
         $avgRate = $this->calculateWeightedAverageRate($loans);
-        $avgTerm = array_sum(array_map(fn($l) => $l->getMonths(), $loans)) / count($loans);
+        $avgTerm = array_sum(array_map(function($l) { return $l->getMonths(); }, $loans)) / count($loans);
 
         $highRisk = [];
         foreach ($loans as $loan) {
@@ -165,7 +168,7 @@ class PortfolioAnalyticsService
         $totalPrincipal = $this->calculateTotalPortfolioPrincipal($loans);
         $herfindahl = $this->calculateHerfindahlIndex($loans);
 
-        $principals = array_map(fn($l) => $l->getPrincipal(), $loans);
+        $principals = array_map(function($l) { return $l->getPrincipal(); }, $loans);
         $maxPrincipal = max($principals);
         $maxPercentage = $this->calculator->divide($maxPrincipal, $totalPrincipal);
 
@@ -252,7 +255,10 @@ class PortfolioAnalyticsService
         }
 
         // Sort by payoff percentage (ascending - lowest first)
-        usort($comparison, fn($a, $b) => $a['payoff_percentage'] <=> $b['payoff_percentage']);
+        usort($comparison, function($a, $b) {
+            if ($a['payoff_percentage'] == $b['payoff_percentage']) return 0;
+            return ($a['payoff_percentage'] < $b['payoff_percentage']) ? -1 : 1;
+        });
         return $comparison;
     }
 

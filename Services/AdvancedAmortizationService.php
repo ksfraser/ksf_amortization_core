@@ -11,8 +11,14 @@ use DateTime;
 
 class AdvancedAmortizationService
 {
-    private AmortizationModel $amortizationModel;
-    private CacheManager $cacheManager;
+    /**
+     * @var AmortizationModel
+     */
+    private $amortizationModel;
+    /**
+     * @var CacheManager
+     */
+    private $cacheManager;
 
     public function __construct(
         AmortizationModel $amortizationModel,

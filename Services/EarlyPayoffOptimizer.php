@@ -15,7 +15,10 @@ use DateTimeImmutable;
  */
 class EarlyPayoffOptimizer
 {
-    private DecimalCalculator $calculator;
+    /**
+     * @var DecimalCalculator
+     */
+    private $calculator;
 
     public function __construct()
     {

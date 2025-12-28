@@ -264,7 +264,7 @@ class ScenarioAnalysisService
         foreach ($this->favorites as &$loanFavorites) {
             $loanFavorites = array_filter(
                 $loanFavorites,
-                fn($s) => $s['id'] !== $scenarioId
+                function($s) use ($scenarioId) { return $s['id'] !== $scenarioId; }
             );
         }
 

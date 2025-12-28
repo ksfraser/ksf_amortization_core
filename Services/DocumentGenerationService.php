@@ -14,7 +14,10 @@ use DateTime;
  */
 class DocumentGenerationService
 {
-    private DecimalCalculator $calculator;
+    /**
+     * @var DecimalCalculator
+     */
+    private $calculator;
 
     public function __construct()
     {

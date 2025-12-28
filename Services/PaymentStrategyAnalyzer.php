@@ -220,16 +220,18 @@ class PaymentStrategyAnalyzer
 
         switch ($goal) {
             case 'minimize_interest':
-                $recommended = min($analyses, fn($a, $b) => 
-                    $a['total_interest'] <=> $b['total_interest']
-                );
+                $recommended = min($analyses, function($a, $b) {
+                    if ($a['total_interest'] == $b['total_interest']) return 0;
+                    return ($a['total_interest'] < $b['total_interest']) ? -1 : 1;
+                });
                 $rationale = 'Minimizes total interest paid';
                 break;
 
             case 'fastest_payoff':
-                $recommended = min($analyses, fn($a, $b) => 
-                    $a['payoff_months'] <=> $b['payoff_months']
-                );
+                $recommended = min($analyses, function($a, $b) {
+                    if ($a['payoff_months'] == $b['payoff_months']) return 0;
+                    return ($a['payoff_months'] < $b['payoff_months']) ? -1 : 1;
+                });
                 $rationale = 'Shortest payoff period';
                 break;
 
@@ -356,9 +358,10 @@ class PaymentStrategyAnalyzer
         $recommended = $this->recommendStrategy($loan, $strategies, 'minimize_interest');
 
         $baseline = $analyses[0];
-        $best = min($analyses, fn($a, $b) => 
-            $a['total_interest'] <=> $b['total_interest']
-        );
+        $best = min($analyses, function($a, $b) {
+            if ($a['total_interest'] == $b['total_interest']) return 0;
+            return ($a['total_interest'] < $b['total_interest']) ? -1 : 1;
+        });
 
         return [
             'recommended_strategy' => $recommended['strategy']['name'],

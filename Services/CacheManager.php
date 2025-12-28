@@ -11,16 +11,28 @@ use InvalidArgumentException;
  * to optimize performance across all amortization services.
  */
 class CacheManager {
-    private array $cache = [];
-    private array $metadata = [];
-    private array $stats = [
+    /**
+     * @var array
+     */
+    private $cache = [];
+    /**
+     * @var array
+     */
+    private $metadata = [];
+    /**
+     * @var array
+     */
+    private $stats = [
         'hits' => 0,
         'misses' => 0,
         'sets' => 0,
         'deletes' => 0,
         'ttl_expirations' => 0
     ];
-    private int $defaultTTL = 3600;
+    /**
+     * @var int
+     */
+    private $defaultTTL = 3600;
 
     /**
      * Set cache value with TTL

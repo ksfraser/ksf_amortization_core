@@ -183,9 +183,9 @@ class MarketAnalysisService {
             return ['analysis' => 'no_data'];
         }
 
-        $avgRate = array_sum(array_map(fn($l) => $l['rate'], $lenders)) / count($lenders);
-        $minRate = min(array_map(fn($l) => $l['rate'], $lenders));
-        $maxRate = max(array_map(fn($l) => $l['rate'], $lenders));
+        $avgRate = array_sum(array_map(function($l) { return $l['rate']; }, $lenders)) / count($lenders);
+        $minRate = min(array_map(function($l) { return $l['rate']; }, $lenders));
+        $maxRate = max(array_map(function($l) { return $l['rate']; }, $lenders));
 
         return [
             'total_lenders' => count($lenders),
@@ -226,7 +226,7 @@ class MarketAnalysisService {
             'report_date' => date('Y-m-d'),
             'our_current_rate' => round($ourRate * 100, 2),
             'market_trend' => $this->analyzeTrendDirection($historicalRates),
-            'competitive_analysis' => $this->rankRateCompetitiveness($ourRate, array_map(fn($c) => $c['rate'], $competitors)),
+            'competitive_analysis' => $this->rankRateCompetitiveness($ourRate, array_map(function($c) { return $c['rate']; }, $competitors)),
             'lender_analysis' => $this->analyzeLenderComparison($competitors),
             'forecast' => $this->forecastRateMovement($historicalRates)
         ];
@@ -276,7 +276,7 @@ class MarketAnalysisService {
         }
 
         $avg = array_sum($values) / count($values);
-        $variance = array_sum(array_map(fn($x) => pow($x - $avg, 2), $values)) / count($values);
+        $variance = array_sum(array_map(function($x) use ($avg) { return pow($x - $avg, 2); }, $values)) / count($values);
         return sqrt($variance);
     }
 }

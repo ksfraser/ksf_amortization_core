@@ -17,10 +17,22 @@ use Ksfraser\Amortizations\Repositories\LoanRepositoryInterface;
  */
 class EventRecordingService
 {
-    private EventRepositoryInterface $eventRepository;
-    private LoanRepositoryInterface $loanRepository;
-    private EventValidator $eventValidator;
-    private ScheduleRecalculationService $recalculationService;
+    /**
+     * @var EventRepositoryInterface
+     */
+    private $eventRepository;
+    /**
+     * @var LoanRepositoryInterface
+     */
+    private $loanRepository;
+    /**
+     * @var EventValidator
+     */
+    private $eventValidator;
+    /**
+     * @var ScheduleRecalculationService
+     */
+    private $recalculationService;
 
     public function __construct(
         EventRepositoryInterface $eventRepository,

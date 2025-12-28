@@ -40,14 +40,20 @@ class DelinquencyClassifier
      *
      * @var PaymentHistoryTracker
      */
-    private PaymentHistoryTracker $tracker;
+    /**
+     * @var PaymentHistoryTracker
+     */
+    private $tracker;
 
     /**
      * Thresholds for delinquency classification (in days)
      *
      * @var array<string, int>
      */
-    private array $thresholds = [
+	/**
+	 * @var array<string, int>
+	 */
+	private $thresholds = [
         'current' => 0,
         'thirty_days' => 30,
         'sixty_days' => 60,

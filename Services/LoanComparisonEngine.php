@@ -14,7 +14,10 @@ use DateTime;
  */
 class LoanComparisonEngine
 {
-    private DecimalCalculator $calculator;
+    /**
+     * @var DecimalCalculator
+     */
+    private $calculator;
 
     public function __construct()
     {
@@ -239,11 +242,11 @@ class LoanComparisonEngine
         $savings = $this->calculateCostSavingsBetweenOffers(
             $offers[0],
             $offers[array_key_first(
-                array_filter($comparison, fn($o) => $o['offer_id'] === $bestOffer['offer_id'])
+                array_filter($comparison, function($o) use ($bestOffer) { return $o['offer_id'] === $bestOffer['offer_id']; })
             )],
             $fees[0],
             $fees[array_key_first(
-                array_filter($comparison, fn($o) => $o['offer_id'] === $bestOffer['offer_id'])
+                array_filter($comparison, function($o) use ($bestOffer) { return $o['offer_id'] === $bestOffer['offer_id']; })
             )],
             $offers[0]->getAnnualRate()
         );
@@ -368,7 +371,10 @@ class LoanComparisonEngine
             );
         }
 
-        usort($comparison, fn($a, $b) => $b['score'] <=> $a['score']);
+        usort($comparison, function($a, $b) {
+            if ($a['score'] == $b['score']) return 0;
+            return ($a['score'] < $b['score']) ? 1 : -1;
+        });
         return $comparison;
     }
 

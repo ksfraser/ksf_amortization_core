@@ -36,7 +36,10 @@ class PaymentHistoryTracker
      *
      * @var array<int, array<int, array>>
      */
-    private array $history = [];
+    /**
+     * @var array<int, array<int, array>>
+     */
+    private $history = [];
 
     /**
      * Record a payment or loan event in the history

@@ -6,9 +6,18 @@ use DateTimeImmutable;
 
 class EventNotificationService
 {
-    private array $subscribers = [];
-    private array $events = [];
-    private array $scheduledEvents = [];
+    /**
+     * @var array
+     */
+    private $subscribers = [];
+    /**
+     * @var array
+     */
+    private $events = [];
+    /**
+     * @var array
+     */
+    private $scheduledEvents = [];
 
     /**
      * Register an event subscriber

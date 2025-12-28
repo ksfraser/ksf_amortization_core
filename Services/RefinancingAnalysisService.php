@@ -92,7 +92,10 @@ class RefinancingAnalysisService
             ];
         }
 
-        usort($comparison, fn($a, $b) => $b['net_savings'] <=> $a['net_savings']);
+        usort($comparison, function($a, $b) {
+            if ($a['net_savings'] == $b['net_savings']) return 0;
+            return ($a['net_savings'] < $b['net_savings']) ? 1 : -1;
+        });
 
         foreach ($comparison as $index => &$offer) {
             $offer['rank'] = $index + 1;

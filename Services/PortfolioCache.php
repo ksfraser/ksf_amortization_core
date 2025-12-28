@@ -10,9 +10,18 @@ use Ksfraser\Amortizations\Models\Loan;
  * frequently-accessed portfolio metrics and aggregations.
  */
 class PortfolioCache {
-    private PortfolioManagementService $portfolioService;
-    private CacheManager $cache;
-    private int $defaultTTL = 1800; // 30 minutes
+    /**
+     * @var PortfolioManagementService
+     */
+    private $portfolioService;
+    /**
+     * @var CacheManager
+     */
+    private $cache;
+    /**
+     * @var int
+     */
+    private $defaultTTL = 1800; // 30 minutes
 
     public function __construct(
         PortfolioManagementService $portfolioService = null,
@@ -146,7 +155,7 @@ class PortfolioCache {
      * Invalidate specific portfolio cache by loan IDs
      */
     public function invalidateForLoans(array $loans): int {
-        $loanIds = array_map(fn($l) => $l->getId(), $loans);
+        $loanIds = array_map(function($l) { return $l->getId(); }, $loans);
         $idString = implode('_', $loanIds);
         
         return $this->cache->deleteByPattern("/.*{$idString}.*/");
@@ -204,7 +213,7 @@ class PortfolioCache {
      * Generate consistent cache key for portfolio calculations
      */
     private function generatePortfolioKey(string $metric, array $loans): string {
-        $loanIds = array_map(fn($l) => $l->getId(), $loans);
+        $loanIds = array_map(function($l) { return $l->getId(); }, $loans);
         sort($loanIds);
         $idHash = md5(implode(':', $loanIds));
 

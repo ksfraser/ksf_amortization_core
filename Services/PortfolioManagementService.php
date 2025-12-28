@@ -121,7 +121,10 @@ class PortfolioManagementService {
         }
 
         // Sort by yield descending
-        usort($ranked, fn($a, $b) => $b['yield'] <=> $a['yield']);
+        usort($ranked, function($a, $b) {
+            if ($a['yield'] == $b['yield']) return 0;
+            return ($a['yield'] < $b['yield']) ? 1 : -1;
+        });
         
         return array_values($ranked);
     }

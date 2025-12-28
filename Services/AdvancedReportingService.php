@@ -146,9 +146,9 @@ class AdvancedReportingService {
         ];
         
         if (!empty($schedule)) {
-            $analysis['monthly_average_payment'] = round(array_sum(array_map(fn($p) => $p['payment'] ?? 0, $schedule)) / count($schedule), 2);
-            $analysis['monthly_average_principal'] = round(array_sum(array_map(fn($p) => $p['principal'] ?? 0, $schedule)) / count($schedule), 2);
-            $analysis['monthly_average_interest'] = round(array_sum(array_map(fn($p) => $p['interest'] ?? 0, $schedule)) / count($schedule), 2);
+            $analysis['monthly_average_payment'] = round(array_sum(array_map(function($p) { return $p['payment'] ?? 0; }, $schedule)) / count($schedule), 2);
+            $analysis['monthly_average_principal'] = round(array_sum(array_map(function($p) { return $p['principal'] ?? 0; }, $schedule)) / count($schedule), 2);
+            $analysis['monthly_average_interest'] = round(array_sum(array_map(function($p) { return $p['interest'] ?? 0; }, $schedule)) / count($schedule), 2);
         }
         
         return $analysis;
@@ -177,7 +177,7 @@ class AdvancedReportingService {
             'total_payments_scheduled' => count($schedule),
             'first_payment_amount' => $schedule[0]['payment'] ?? 0,
             'last_payment_amount' => $schedule[count($schedule) - 1]['payment'] ?? 0,
-            'payment_variance' => round(max(array_map(fn($p) => $p['payment'] ?? 0, $schedule)) - min(array_map(fn($p) => $p['payment'] ?? 0, $schedule)), 2)
+            'payment_variance' => round(max(array_map(function($p) { return $p['payment'] ?? 0; }, $schedule)) - min(array_map(function($p) { return $p['payment'] ?? 0; }, $schedule)), 2)
         ];
     }
 
@@ -203,9 +203,9 @@ class AdvancedReportingService {
      */
     public function generateComparisonReport(array $schedule1, array $schedule2): array {
         return [
-            'schedule_1_total_interest' => round(array_sum(array_map(fn($p) => $p['interest'] ?? 0, $schedule1)), 2),
-            'schedule_2_total_interest' => round(array_sum(array_map(fn($p) => $p['interest'] ?? 0, $schedule2)), 2),
-            'interest_savings' => round(array_sum(array_map(fn($p) => $p['interest'] ?? 0, $schedule1)) - array_sum(array_map(fn($p) => $p['interest'] ?? 0, $schedule2)), 2),
+            'schedule_1_total_interest' => round(array_sum(array_map(function($p) { return $p['interest'] ?? 0; }, $schedule1)), 2),
+            'schedule_2_total_interest' => round(array_sum(array_map(function($p) { return $p['interest'] ?? 0; }, $schedule2)), 2),
+            'interest_savings' => round(array_sum(array_map(function($p) { return $p['interest'] ?? 0; }, $schedule1)) - array_sum(array_map(function($p) { return $p['interest'] ?? 0; }, $schedule2)), 2),
             'schedule_1_total_periods' => count($schedule1),
             'schedule_2_total_periods' => count($schedule2),
             'period_difference' => count($schedule1) - count($schedule2)
