@@ -183,12 +183,19 @@ class AnalysisService
         $balance = $loan->current_balance ?? $loan->principal;
 
         // Determine extra payment frequency in months
-        $frequencyMonths = match ($frequency) {
-            'quarterly' => 3,
-            'annual' => 12,
-            'monthly' => 1,
-            default => 1
-        };
+        switch ($frequency) {
+            case 'quarterly':
+                $frequencyMonths = 3;
+                break;
+            case 'annual':
+                $frequencyMonths = 12;
+                break;
+            case 'monthly':
+                $frequencyMonths = 1;
+                break;
+            default:
+                $frequencyMonths = 1;
+        }
 
         $months = 0;
         $totalInterest = 0;

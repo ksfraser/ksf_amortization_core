@@ -114,12 +114,19 @@ class PrepaymentPenaltyCalculator
         }
 
         // Calculate based on penalty type
-        $penaltyAmount = match ($penalty['type']) {
-            'percentage' => $this->calculatePercentagePenalty($prepaymentAmount, $penalty),
-            'fixed' => $penalty['amount_or_percent'],
-            'declining' => $this->calculateDecliningPenalty($prepaymentAmount, $penalty, $loanState),
-            default => 0.00,
-        };
+        switch ($penalty['type']) {
+            case 'percentage':
+                $penaltyAmount = $this->calculatePercentagePenalty($prepaymentAmount, $penalty);
+                break;
+            case 'fixed':
+                $penaltyAmount = $penalty['amount_or_percent'];
+                break;
+            case 'declining':
+                $penaltyAmount = $this->calculateDecliningPenalty($prepaymentAmount, $penalty, $loanState);
+                break;
+            default:
+                $penaltyAmount = 0.00;
+        }
 
         // Apply maximum cap if defined
         if ($penalty['maximum_cap'] !== null && $penaltyAmount > $penalty['maximum_cap']) {

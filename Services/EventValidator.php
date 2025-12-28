@@ -82,15 +82,22 @@ class EventValidator
         array $eventData,
         Loan $loan
     ): array {
-        return match ($eventType) {
-            'extra_payment' => $this->validateExtraPayment($eventData, $loan),
-            'skip_payment' => $this->validateSkipPayment($eventData, $loan),
-            'rate_change' => $this->validateRateChange($eventData, $loan),
-            'loan_modification' => $this->validateLoanModification($eventData, $loan),
-            'payment_applied' => $this->validatePaymentApplied($eventData, $loan),
-            'accrual' => $this->validateAccrual($eventData, $loan),
-            default => []
-        };
+        switch ($eventType) {
+            case 'extra_payment':
+                return $this->validateExtraPayment($eventData, $loan);
+            case 'skip_payment':
+                return $this->validateSkipPayment($eventData, $loan);
+            case 'rate_change':
+                return $this->validateRateChange($eventData, $loan);
+            case 'loan_modification':
+                return $this->validateLoanModification($eventData, $loan);
+            case 'payment_applied':
+                return $this->validatePaymentApplied($eventData, $loan);
+            case 'accrual':
+                return $this->validateAccrual($eventData, $loan);
+            default:
+                return [];
+        }
     }
 
     /**

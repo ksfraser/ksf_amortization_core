@@ -226,12 +226,19 @@ class LoanComparisonEngine
         $comparison = $this->compareLoanOffersSideBySide($offers, $fees);
 
         $bestOffer = $comparison[0];
-        $key = match ($goal) {
-            'minimize_cost' => 'total_cost',
-            'minimize_payment' => 'monthly_payment',
-            'minimize_term' => 'term_months',
-            default => 'total_cost',
-        };
+        switch ($goal) {
+            case 'minimize_cost':
+                $key = 'total_cost';
+                break;
+            case 'minimize_payment':
+                $key = 'monthly_payment';
+                break;
+            case 'minimize_term':
+                $key = 'term_months';
+                break;
+            default:
+                $key = 'total_cost';
+        }
 
         foreach ($comparison as $offer) {
             if ($offer[$key] < $bestOffer[$key]) {

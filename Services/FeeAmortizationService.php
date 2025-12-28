@@ -370,13 +370,18 @@ class FeeAmortizationService
      */
     private function getAssetAccount($feeType)
     {
-        return match ($feeType) {
-            'origination' => '1105',  // Origination fees receivable
-            'closing' => '1106',      // Closing fees receivable
-            'servicing' => '1107',    // Servicing fees receivable
-            'insurance' => '1108',    // Insurance fees receivable
-            default => '1100',        // General fees receivable
-        };
+        switch ($feeType) {
+            case 'origination':
+                return '1105'; // Origination fees receivable
+            case 'closing':
+                return '1106'; // Closing fees receivable
+            case 'servicing':
+                return '1107'; // Servicing fees receivable
+            case 'insurance':
+                return '1108'; // Insurance fees receivable
+            default:
+                return '1100'; // General fees receivable
+        }
     }
 
     /**
@@ -387,13 +392,18 @@ class FeeAmortizationService
      */
     private function getIncomeAccount($feeType)
     {
-        return match ($feeType) {
-            'origination' => '4105',  // Origination fee income
-            'closing' => '4106',      // Closing fee income
-            'servicing' => '4107',    // Servicing fee income
-            'insurance' => '4108',    // Insurance fee income
-            default => '4100',        // General fee income
-        };
+        switch ($feeType) {
+            case 'origination':
+                return '4105'; // Origination fee income
+            case 'closing':
+                return '4106'; // Closing fee income
+            case 'servicing':
+                return '4107'; // Servicing fee income
+            case 'insurance':
+                return '4108'; // Insurance fee income
+            default:
+                return '4100'; // General fee income
+        }
     }
 
     /**

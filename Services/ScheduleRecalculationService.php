@@ -50,13 +50,18 @@ class ScheduleRecalculationService
             return $loan;
         }
 
-        return match ($event->event_type) {
-            'extra_payment' => $this->recalculateAfterExtraPayment($loan, $event, $eventData),
-            'skip_payment' => $this->recalculateAfterSkipPayment($loan, $event, $eventData),
-            'rate_change' => $this->recalculateAfterRateChange($loan, $event, $eventData),
-            'loan_modification' => $this->recalculateAfterModification($loan, $event, $eventData),
-            default => $loan
-        };
+        switch ($event->event_type) {
+            case 'extra_payment':
+                return $this->recalculateAfterExtraPayment($loan, $event, $eventData);
+            case 'skip_payment':
+                return $this->recalculateAfterSkipPayment($loan, $event, $eventData);
+            case 'rate_change':
+                return $this->recalculateAfterRateChange($loan, $event, $eventData);
+            case 'loan_modification':
+                return $this->recalculateAfterModification($loan, $event, $eventData);
+            default:
+                return $loan;
+        }
     }
 
     /**
