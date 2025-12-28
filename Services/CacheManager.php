@@ -41,7 +41,12 @@ class CacheManager {
      * @param mixed $value Cache value
      * @param int $ttl Time to live in seconds (default: 1 hour)
      */
-    public function set(string $key, mixed $value, int $ttl = null): void {
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @param int|null $ttl
+     */
+    public function set(string $key, $value, $ttl = null): void {
         if (empty($key)) {
             throw new InvalidArgumentException("Cache key cannot be empty");
         }
@@ -65,7 +70,11 @@ class CacheManager {
      * @param string $key Cache key
      * @return mixed|null Cached value or null if expired/missing
      */
-    public function get(string $key): mixed {
+    /**
+     * @param string $key
+     * @return mixed|null
+     */
+    public function get(string $key) {
         if (!$this->has($key)) {
             $this->stats['misses']++;
             return null;
