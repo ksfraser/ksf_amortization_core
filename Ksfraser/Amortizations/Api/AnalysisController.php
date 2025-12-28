@@ -1,0 +1,3 @@
+<?php
+// ...existing code...
+git submodule update --init --recursive

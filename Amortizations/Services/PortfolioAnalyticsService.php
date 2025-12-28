@@ -14,10 +14,7 @@ use DateTime;
  */
 class PortfolioAnalyticsService
 {
-    /**
-     * @var DecimalCalculator
-     */
-    private $calculator;
+    private DecimalCalculator $calculator;
 
     public function __construct()
     {
@@ -33,7 +30,7 @@ class PortfolioAnalyticsService
         foreach ($loans as $loan) {
             $total += $loan->getPrincipal();
         }
-        return $this->calculator->asFloat($total, 2);
+        return $this->calculator->round($total, 2);
     }
 
     /**
@@ -45,7 +42,7 @@ class PortfolioAnalyticsService
         foreach ($loans as $loan) {
             $total += $loan->getCurrentBalance();
         }
-        return $this->calculator->asFloat($total, 2);
+        return $this->calculator->round($total, 2);
     }
 
     /**
@@ -64,7 +61,7 @@ class PortfolioAnalyticsService
             $weightedRate += $this->calculator->multiply($loan->getAnnualRate(), $weight);
         }
 
-        return $this->calculator->asFloat($weightedRate, 6);
+        return $this->calculator->round($weightedRate, 6);
     }
 
     /**
@@ -90,7 +87,7 @@ class PortfolioAnalyticsService
      */
     public function calculatePortfolioRiskScore(array $loans): float
     {
-        $rates = array_map(function($loan) { return $loan->getAnnualRate(); }, $loans);
+        $rates = array_map(fn($loan) => $loan->getAnnualRate(), $loans);
         $avgRate = array_sum($rates) / count($rates);
 
         // Risk: variance in rates + concentration
@@ -107,7 +104,7 @@ class PortfolioAnalyticsService
         $rateRisk = min(30, $stdev * 100);
         $concRisk = min(70, $concentration * 100);
 
-        return $this->calculator->asFloat($rateRisk + $concRisk, 2);
+        return $this->calculator->round($rateRisk + $concRisk, 2);
     }
 
     /**
@@ -116,7 +113,7 @@ class PortfolioAnalyticsService
     public function identifyHighRiskLoans(array $loans): array
     {
         $avgRate = $this->calculateWeightedAverageRate($loans);
-        $avgTerm = array_sum(array_map(function($l) { return $l->getMonths(); }, $loans)) / count($loans);
+        $avgTerm = array_sum(array_map(fn($l) => $l->getMonths(), $loans)) / count($loans);
 
         $highRisk = [];
         foreach ($loans as $loan) {
@@ -168,7 +165,7 @@ class PortfolioAnalyticsService
         $totalPrincipal = $this->calculateTotalPortfolioPrincipal($loans);
         $herfindahl = $this->calculateHerfindahlIndex($loans);
 
-        $principals = array_map(function($l) { return $l->getPrincipal(); }, $loans);
+        $principals = array_map(fn($l) => $l->getPrincipal(), $loans);
         $maxPrincipal = max($principals);
         $maxPercentage = $this->calculator->divide($maxPrincipal, $totalPrincipal);
 
@@ -225,7 +222,7 @@ class PortfolioAnalyticsService
     {
         $totalPrincipal = $this->calculateTotalPortfolioPrincipal($loans);
         $totalBalance = $this->calculateTotalPortfolioCurrentBalance($loans);
-        return $this->calculator->asFloat($this->calculator->subtract($totalPrincipal, $totalBalance), 2);
+        return $this->calculator->round($this->calculator->subtract($totalPrincipal, $totalBalance), 2);
     }
 
     /**
@@ -255,10 +252,7 @@ class PortfolioAnalyticsService
         }
 
         // Sort by payoff percentage (ascending - lowest first)
-        usort($comparison, function($a, $b) {
-            if ($a['payoff_percentage'] == $b['payoff_percentage']) return 0;
-            return ($a['payoff_percentage'] < $b['payoff_percentage']) ? -1 : 1;
-        });
+        usort($comparison, fn($a, $b) => $a['payoff_percentage'] <=> $b['payoff_percentage']);
         return $comparison;
     }
 
@@ -272,7 +266,7 @@ class PortfolioAnalyticsService
         }
 
         $totalBalance = $this->calculateTotalPortfolioCurrentBalance($loans);
-        return $this->calculator->asFloat($this->calculator->divide($totalBalance, $annualIncome), 4);
+        return $this->calculator->round($this->calculator->divide($totalBalance, $annualIncome), 4);
     }
 
     /**
@@ -325,7 +319,7 @@ class PortfolioAnalyticsService
             $principal,
             $this->calculator->subtract($currentRate, $targetRate)
         );
-        return $this->calculator->asFloat($savings, 2);
+        return $this->calculator->round($savings, 2);
     }
 
     /**
@@ -338,7 +332,7 @@ class PortfolioAnalyticsService
             // Simple: balance * rate (proxy for remaining interest)
             $totalInterest += $this->calculator->multiply($loan->getCurrentBalance(), $avgRate);
         }
-        return $this->calculator->asFloat($totalInterest, 2);
+        return $this->calculator->round($totalInterest, 2);
     }
 
     /**
@@ -392,6 +386,6 @@ class PortfolioAnalyticsService
         $riskScore = $this->calculatePortfolioRiskScore($loans);
         $quality = 100 - $riskScore;  // Inverse of risk
 
-        return $this->calculator->asFloat(max(0, $quality), 2);
+        return $this->calculator->round(max(0, $quality), 2);
     }
 }
