@@ -16,7 +16,7 @@ class ComposerStaticInited2755566032f9224ff39a343c4b850c
     public static $prefixDirsPsr4 = array (
         'Ksfraser\\Amortizations\\' =>
         array (
-            0 => __DIR__ . '/../..' . '/src/Ksfraser/Amortizations',
+            0 => __DIR__ . '/../..' . '/',
         ),
     );
 

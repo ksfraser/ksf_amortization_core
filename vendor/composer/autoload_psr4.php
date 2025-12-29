@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Ksfraser\\Amortizations\\' => array($baseDir . '/src/Ksfraser/Amortizations'),
+    'Ksfraser\\Amortizations\\' => array($baseDir . '/'),
 );
